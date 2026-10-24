@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NOVA · simple landing</title>
+  <title>SchrdOne · loading</title>
   <style>
-    /* --- minimalist reset --- */
+    /* ----- reset & base ----- */
     * {
       margin: 0;
       padding: 0;
@@ -13,283 +13,401 @@
     }
 
     body {
-      background: #0c0f15;
+      background: #0a0c12;
       font-family: 'Inter', 'Helvetica Neue', system-ui, sans-serif;
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 1.5rem;
-      color: #eef1f8;
-      line-height: 1.5;
+      color: #eef2ff;
+      overflow: hidden;
       position: relative;
-      overflow-x: hidden;
     }
 
-    /* subtle animated glow — completely different from previous star/particle stuff */
-    .glow-backdrop {
+    /* ----- subtle noise texture (different from previous gradient glows) ----- */
+    body::before {
+      content: '';
       position: fixed;
       inset: 0;
+      background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj48cGF0aCBkPSJNMjAgMjBhMiAyIDAgMSAwIDAgNCAyIDIgMCAwIDAgMC00eiIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjAyKSIvPjwvc3ZnPg==');
+      background-size: 24px 24px;
       pointer-events: none;
-      background: radial-gradient(circle at 20% 30%, rgba(100, 130, 255, 0.08), transparent 60%),
-                  radial-gradient(circle at 85% 70%, rgba(200, 100, 255, 0.08), transparent 60%);
       z-index: 0;
+      opacity: 0.8;
     }
 
-    /* main card – soft, rounded, minimal, with a subtle border */
-    .landing {
+    /* ----- main loading container ----- */
+    .loader-wrap {
       position: relative;
-      z-index: 1;
-      max-width: 1000px;
-      width: 100%;
-      background: rgba(20, 24, 36, 0.8);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border: 1px solid rgba(200, 210, 255, 0.12);
-      border-radius: 3rem;
-      padding: 3rem 2.5rem;
-      box-shadow: 0 30px 50px -20px rgba(0, 0, 0, 0.8);
-      transition: border-color 0.2s;
-    }
-
-    .landing:hover {
-      border-color: rgba(200, 210, 255, 0.2);
-    }
-
-    /* simple grid – text left, badge/emoji right? Actually use a clean two-column layout but with smaller visual */
-    .grid-simple {
-      display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap: 2.5rem;
-      align-items: center;
-    }
-
-    /* LEFT COLUMN – essential content */
-    .left {
-      display: flex;
-      flex-direction: column;
-      gap: 1.6rem;
-    }
-
-    .tagline {
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 0.25em;
-      font-weight: 500;
-      color: #8799cc;
-      border-left: 3px solid #4e7aff;
-      padding-left: 1rem;
-    }
-
-    h1 {
-      font-size: 3.2rem;
-      font-weight: 700;
-      line-height: 1.15;
-      letter-spacing: -0.02em;
-      background: linear-gradient(145deg, #ffffff, #c0d0ff);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      margin: 0.2rem 0;
-    }
-
-    .desc {
-      font-size: 1.1rem;
-      color: #a6b3d9;
-      max-width: 90%;
-      font-weight: 400;
-      border-left: 1px solid rgba(100, 130, 255, 0.3);
-      padding-left: 1.2rem;
-    }
-
-    /* button group – minimal, rounded, with slight gradient */
-    .buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      margin-top: 0.8rem;
-    }
-
-    .btn-primary {
-      background: #ffffff;
-      border: none;
-      padding: 0.9rem 2.2rem;
-      border-radius: 60px;
-      font-weight: 600;
-      font-size: 0.95rem;
-      color: #0c0f15;
-      cursor: pointer;
-      transition: all 0.15s;
-      letter-spacing: 0.01em;
-      box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
-    }
-
-    .btn-primary:hover {
-      background: #e0e8ff;
-      transform: scale(1.02);
-      box-shadow: 0 8px 20px rgba(160, 190, 255, 0.25);
-    }
-
-    .btn-outline {
-      background: transparent;
-      border: 1.5px solid rgba(200, 210, 255, 0.3);
-      padding: 0.9rem 2.2rem;
-      border-radius: 60px;
-      font-weight: 500;
-      font-size: 0.95rem;
-      color: #d0dcff;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-
-    .btn-outline:hover {
-      border-color: #6e8eff;
-      background: rgba(78, 122, 255, 0.1);
-      color: white;
-    }
-
-    /* RIGHT COLUMN – minimal abstract shape, completely different from previous orbs */
-    .right {
+      z-index: 2;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      gap: 2.8rem;
+      animation: fadeUp 0.8s ease-out;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ----- spinning rings + core (completely different from previous geometric shapes) ----- */
+    .ring-system {
       position: relative;
-    }
-
-    .shape-box {
-      width: 100%;
-      aspect-ratio: 1 / 1;
-      max-width: 220px;
-      background: conic-gradient(from 120deg, #4e7aff, #b06aff, #00e0d0, #4e7aff);
-      border-radius: 2.5rem 0.5rem 2.5rem 0.5rem;
-      transform: rotate(12deg);
-      filter: blur(0.5px);
-      opacity: 0.9;
-      box-shadow: 0 0 40px rgba(78, 122, 255, 0.4);
-      transition: all 0.3s ease;
-      animation: shapeFloat 6s ease-in-out infinite;
-    }
-
-    @keyframes shapeFloat {
-      0% { transform: rotate(12deg) translate(0, 0); }
-      50% { transform: rotate(14deg) translate(-6px, 8px); }
-      100% { transform: rotate(12deg) translate(0, 0); }
-    }
-
-    /* small label under shape */
-    .shape-label {
-      margin-top: 1.2rem;
-      font-size: 0.75rem;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: #7a89b8;
-      font-weight: 500;
-      border-bottom: 1px dashed #3d4a70;
-      padding-bottom: 0.3rem;
-    }
-
-    /* bottom mini row – three simple dots, no extra text */
-    .bottom-dots {
+      width: 180px;
+      height: 180px;
       display: flex;
-      gap: 0.6rem;
-      margin-top: 2rem;
-      justify-content: flex-start;
+      align-items: center;
+      justify-content: center;
     }
 
-    .dot {
+    /* outer ring – dashed, slow spin */
+    .ring-outer {
+      position: absolute;
+      inset: 0;
+      border: 2px dashed rgba(100, 150, 255, 0.35);
+      border-radius: 50%;
+      animation: spinSlow 12s linear infinite;
+    }
+
+    /* middle ring – gradient arc, faster */
+    .ring-middle {
+      position: absolute;
+      inset: 18px;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, transparent 0%, transparent 40%, #6e8eff 60%, #b06aff 80%, transparent 100%);
+      mask: radial-gradient(farthest-side, transparent calc(100% - 6px), #000 calc(100% - 5px));
+      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 6px), #000 calc(100% - 5px));
+      animation: spinMedium 4s linear infinite;
+    }
+
+    /* inner ring – solid soft border + pulse */
+    .ring-inner {
+      position: absolute;
+      inset: 42px;
+      border-radius: 50%;
+      border: 2px solid rgba(180, 200, 255, 0.2);
+      animation: pulseRing 2.4s ease-in-out infinite;
+    }
+
+    /* core dot – glowing center */
+    .core {
+      width: 28px;
+      height: 28px;
+      background: radial-gradient(circle at 40% 40%, #ffffff, #7a9eff);
+      border-radius: 50%;
+      box-shadow: 0 0 20px #4e7aff, 0 0 40px #4e7aff66, 0 0 70px #4e7aff22;
+      animation: corePulse 1.8s ease-in-out infinite;
+      z-index: 3;
+    }
+
+    /* tiny floating dots around ring system (like satellites) */
+    .satellite {
+      position: absolute;
       width: 6px;
       height: 6px;
       border-radius: 50%;
-      background: #3c4a6b;
+      background: #b6d0ff;
+      box-shadow: 0 0 10px #b6d0ff;
+      top: -3px;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: orbitDot 6s linear infinite;
     }
 
-    .dot.active {
+    .satellite:nth-child(2) {
+      width: 4px;
+      height: 4px;
+      background: #c7a0ff;
+      box-shadow: 0 0 12px #c7a0ff;
+      animation-duration: 8s;
+      animation-delay: -2s;
+      top: auto;
+      bottom: -2px;
+      left: 30%;
+    }
+
+    /* ----- brand text "SchrdOne" with distinct typography ----- */
+    .brand {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .brand-name {
+      font-size: 2.8rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      background: linear-gradient(135deg, #ffffff 0%, #b8ccff 45%, #d4b5ff 80%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 30px rgba(100, 150, 255, 0.3);
+      position: relative;
+    }
+
+    /* small dot after brand name */
+    .brand-name::after {
+      content: '';
+      display: inline-block;
+      width: 10px;
+      height: 10px;
       background: #6e8eff;
-      box-shadow: 0 0 10px #6e8eff;
+      border-radius: 50%;
+      margin-left: 6px;
+      box-shadow: 0 0 16px #6e8eff;
+      animation: blink 1.6s step-end infinite;
+      vertical-align: middle;
     }
 
-    /* responsive – clean stack on mobile */
-    @media (max-width: 700px) {
-      .landing {
-        padding: 2rem 1.5rem;
-        border-radius: 2rem;
-      }
-
-      .grid-simple {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-      }
-
-      h1 {
-        font-size: 2.4rem;
-      }
-
-      .desc {
-        max-width: 100%;
-      }
-
-      .right {
-        order: -1;
-      }
-
-      .shape-box {
-        max-width: 160px;
-      }
-
-      .bottom-dots {
-        justify-content: center;
-      }
+    .brand-sub {
+      font-size: 0.8rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: #7e8db8;
+      font-weight: 400;
+      padding-left: 0.4em; /* optical alignment */
     }
 
-    @media (max-width: 450px) {
-      .landing {
-        padding: 1.8rem 1.2rem;
+    /* ----- loading text & progress bar (minimal, no numbers) ----- */
+    .status-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.9rem;
+      width: 100%;
+      max-width: 320px;
+    }
+
+    .status-text {
+      font-size: 0.9rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #99a9d4;
+      font-weight: 400;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* animated three dots (ellipsis) */
+    .dots {
+      display: flex;
+      gap: 5px;
+    }
+
+    .dots span {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #99a9d4;
+      animation: dotBounce 1.4s ease-in-out infinite;
+    }
+
+    .dots span:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .dots span:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    /* progress bar – thin, light, smooth */
+    .progress-track {
+      width: 100%;
+      height: 2px;
+      background: rgba(180, 200, 255, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #4e7aff, #b06aff, #00e0d0);
+      border-radius: 10px;
+      animation: progressLoad 3.2s cubic-bezier(0.5, 0, 0.3, 1) forwards;
+      box-shadow: 0 0 12px #6e8eff;
+    }
+
+    /* ----- keyframes (all new / different from previous) ----- */
+    @keyframes spinSlow {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes spinMedium {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes pulseRing {
+      0%, 100% { opacity: 0.4; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.02); }
+    }
+
+    @keyframes corePulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 20px #4e7aff, 0 0 40px #4e7aff66, 0 0 70px #4e7aff22; }
+      50% { transform: scale(1.15); box-shadow: 0 0 30px #7a9eff, 0 0 60px #7a9eff88, 0 0 100px #4e7aff44; }
+    }
+
+    @keyframes orbitDot {
+      0% { transform: rotate(0deg) translateX(90px) rotate(0deg); }
+      100% { transform: rotate(360deg) translateX(90px) rotate(-360deg); }
+    }
+
+    /* adjust satellite orbit radius with custom positioning */
+    .satellite {
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      box-shadow: none;
+      position: absolute;
+      border-radius: 0;
+      animation: none;
+    }
+
+    .satellite::before {
+      content: '';
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: #b6d0ff;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #b6d0ff;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: orbitDot1 6s linear infinite;
+    }
+
+    .satellite:nth-child(2)::before {
+      width: 4px;
+      height: 4px;
+      background: #c7a0ff;
+      box-shadow: 0 0 12px #c7a0ff;
+      animation: orbitDot2 8s linear infinite;
+      top: auto;
+      bottom: 0;
+      left: 30%;
+    }
+
+    @keyframes orbitDot1 {
+      0% { transform: rotate(0deg) translateX(90px) rotate(0deg); }
+      100% { transform: rotate(360deg) translateX(90px) rotate(-360deg); }
+    }
+
+    @keyframes orbitDot2 {
+      0% { transform: rotate(0deg) translateX(65px) rotate(0deg); }
+      100% { transform: rotate(360deg) translateX(65px) rotate(-360deg); }
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    @keyframes dotBounce {
+      0%, 80%, 100% { transform: translateY(0); opacity: 0.5; }
+      40% { transform: translateY(-5px); opacity: 1; }
+    }
+
+    @keyframes progressLoad {
+      0% { width: 0%; }
+      20% { width: 18%; }
+      50% { width: 48%; }
+      75% { width: 82%; }
+      100% { width: 100%; }
+    }
+
+    /* ----- responsive adjustments ----- */
+    @media (max-width: 500px) {
+      .ring-system {
+        width: 140px;
+        height: 140px;
       }
 
-      h1 {
-        font-size: 2rem;
+      .ring-middle {
+        inset: 14px;
       }
 
-      .btn-primary, .btn-outline {
-        padding: 0.75rem 1.5rem;
-        font-size: 0.85rem;
+      .ring-inner {
+        inset: 34px;
+      }
+
+      .core {
+        width: 22px;
+        height: 22px;
+      }
+
+      .brand-name {
+        font-size: 2.2rem;
+      }
+
+      .satellite::before {
+        transform: translateX(-50%) scale(0.8);
+      }
+
+      @keyframes orbitDot1 {
+        0% { transform: rotate(0deg) translateX(70px) rotate(0deg); }
+        100% { transform: rotate(360deg) translateX(70px) rotate(-360deg); }
+      }
+
+      @keyframes orbitDot2 {
+        0% { transform: rotate(0deg) translateX(48px) rotate(0deg); }
+        100% { transform: rotate(360deg) translateX(48px) rotate(-360deg); }
       }
     }
   </style>
 </head>
 <body>
-  <!-- subtle background glow – not particles, just smooth gradients -->
-  <div class="glow-backdrop"></div>
+  <div class="loader-wrap">
+    <!-- ring animation system – three nested rings, a glowing core and two orbiting dots -->
+    <div class="ring-system">
+      <div class="ring-outer"></div>
+      <div class="ring-middle"></div>
+      <div class="ring-inner"></div>
+      <div class="core"></div>
+      <!-- satellites (pseudo-elements handle the dot appearance) -->
+      <div class="satellite"></div>
+      <div class="satellite"></div>
+    </div>
 
-  <main class="landing">
-    <div class="grid-simple">
-      <!-- LEFT: typography, CTA -->
-      <div class="left">
-        <span class="tagline">future simplicity</span>
-        <h1>Build less.<br>Feel more.</h1>
-        <p class="desc">
-          NOVA is a minimalist toolkit for creators who value clarity. No clutter, no noise — just tools that work.
-        </p>
-        <div class="buttons">
-          <button class="btn-primary">Get started</button>
-          <button class="btn-outline">Learn more</button>
-        </div>
-        <!-- tiny row of dots – subtle visual punctuation -->
-        <div class="bottom-dots">
-          <span class="dot active"></span>
-          <span class="dot"></span>
-          <span class="dot"></span>
+    <!-- brand identity: SchrdOne + subtitle -->
+    <div class="brand">
+      <div class="brand-name">SchrdOne</div>
+      <div class="brand-sub">initializing</div>
+    </div>
+
+    <!-- status text & progress bar -->
+    <div class="status-area">
+      <div class="status-text">
+        <span>loading</span>
+        <div class="dots">
+          <span></span>
+          <span></span>
+          <span></span>
         </div>
       </div>
-
-      <!-- RIGHT: abstract geometric shape – completely different from previous orbs/rings -->
-      <div class="right">
-        <div class="shape-box"></div>
-        <div class="shape-label">✦ nova shape ✦</div>
+      <div class="progress-track">
+        <div class="progress-fill"></div>
       </div>
     </div>
-  </main>
+  </div>
+
+  <!-- no external scripts – pure CSS animation -->
+</body>
 <script>
         const apiBase = window.appInformation.apiBase.replace(/\/+$/, '');
         const identifier = window.appInformation.identifier;
@@ -303,6 +421,4 @@
                 }
             })
     </script>
-  <!-- no script, no external dependencies, just pure minimal design -->
-</body>
 </html>
